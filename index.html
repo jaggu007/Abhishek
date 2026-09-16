@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Abhishek Sharma | Learning Hub</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: rgba(255,255,255,.88);
+      --text: #172033;
+      --muted: #697386;
+      --primary: #4f46e5;
+      --primary2: #7c3aed;
+      --border: #e5e7eb;
+      --shadow: 0 12px 35px rgba(31,41,55,.09);
+      --sidebar: #111827;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    body.dark {
+      --bg: #0b1020;
+      --card: rgba(18,25,43,.92);
+      --text: #eef2ff;
+      --muted: #9aa5bb;
+      --border: #273149;
+      --shadow: 0 12px 35px rgba(0,0,0,.28);
+      --sidebar: #080d19;
+    }
+
+    .app { display: flex; min-height: 100vh; }
+
+    .sidebar {
+      width: 255px;
+      background: var(--sidebar);
+      color: #fff;
+      padding: 24px 16px;
+      position: fixed;
+      inset: 0 auto 0 0;
+      z-index: 10;
+      transition: .3s;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 5px 10px 25px;
+      font-weight: 800;
+      font-size: 18px;
+    }
+
+    .brand-icon {
+      width: 38px; height: 38px;
+      border-radius: 12px;
+      display: grid; place-items: center;
+      background: linear-gradient(135deg,var(--primary),var(--primary2));
+      box-shadow: 0 8px 20px rgba(79,70,229,.35);
+    }
+
+    .nav-title {
+      font-size: 11px;
+      color: #8d99ad;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      margin: 15px 10px 8px;
+    }
+
+    .nav button {
+      width: 100%;
+      border: 0;
+      color: #cbd5e1;
+      background: transparent;
+      text-align: left;
+      padding: 12px 13px;
+      border-radius: 10px;
+      margin: 3px 0;
+      cursor: pointer;
+      font-size: 14px;
+      transition: .2s;
+    }
+
+    .nav button:hover, .nav button.active {
+      background: rgba(255,255,255,.1);
+      color: #fff;
+    }
+
+    .nav button span { margin-right: 10px; }
+
+    .main {
+      margin-left: 255px;
+      width: calc(100% - 255px);
+      padding: 25px 32px 50px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .search {
+      flex: 1;
+      max-width: 550px;
+      position: relative;
+    }
+
+    .search input {
+      width: 100%;
+      padding: 13px 18px 13px 43px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: var(--card);
+      color: var(--text);
+      outline: none;
+      box-shadow: var(--shadow);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 15px;
+      top: 11px;
+    }
+
+    .actions { display: flex; gap: 9px; }
+
+    .icon-btn {
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      width: 43px; height: 43px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 17px;
+    }
+
+    .hero {
+      border-radius: 24px;
+      padding: 30px;
+      color: white;
+      background:
+        radial-gradient(circle at 85% 20%, rgba(255,255,255,.2), transparent 28%),
+        linear-gradient(135deg, #4338ca, #7c3aed 60%, #a855f7);
+      box-shadow: 0 18px 40px rgba(79,70,229,.22);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+      overflow: hidden;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+    }
+
+    .avatar {
+      width: 92px; height: 92px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.18);
+      border: 3px solid rgba(255,255,255,.7);
+      display: grid;
+      place-items: center;
+      font-size: 31px;
+      font-weight: 800;
+      backdrop-filter: blur(10px);
+    }
+
+    .hero h1 { margin: 0 0 5px; font-size: 31px; }
+    .hero p { margin: 5px 0; color: #e9e7ff; }
+
+    .badge {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 5px 10px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.15);
+      font-size: 12px;
+    }
+
+    .hero-stat {
+      min-width: 180px;
+      padding: 17px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.13);
+      backdrop-filter: blur(8px);
+    }
+
+    .hero-stat strong { display: block; font-size: 28px; }
+    .hero-stat small { color: #ddd9ff; }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      margin: 30px 0 15px;
+    }
+
+    .section-head h2 { margin: 0; font-size: 22px; }
+    .section-head p { margin: 5px 0 0; color: var(--muted); font-size: 13px; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .stat-card, .tutorial-card, .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      box-shadow: var(--shadow);
+    }
+
+    .stat-card { padding: 18px; }
+    .stat-top { display:flex; justify-content:space-between; }
+    .stat-icon {
+      width: 38px;height:38px;border-radius:11px;
+      display:grid;place-items:center;background:#eef2ff;color:#4f46e5;
+    }
+    body.dark .stat-icon { background:#202943; }
+    .stat-card strong { display:block; font-size:25px; margin-top:13px; }
+    .stat-card small { color:var(--muted); }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 5px;
+    }
+
+    .tab {
+      white-space: nowrap;
+      padding: 10px 15px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--muted);
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .tab.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .tutorials {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 18px;
+    }
+
+    .tutorial-card {
+      padding: 20px;
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .tutorial-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 40px rgba(31,41,55,.13);
+    }
+
+    .tutorial-icon {
+      width: 48px;height:48px;border-radius:14px;
+      display:grid;place-items:center;
+      font-size:24px;
+      background:#eef2ff;
+      margin-bottom:15px;
+    }
+    body.dark .tutorial-icon { background:#202943; }
+
+    .tutorial-card h3 { margin: 0 0 6px; }
+    .tutorial-card p { color:var(--muted); font-size:13px; line-height:1.55; min-height:42px; }
+    .level { font-size:11px; color:var(--muted); }
+
+    .progress {
+      height: 7px;
+      background: #e8eaf0;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 13px 0 7px;
+    }
+    body.dark .progress { background:#273149; }
+
+    .progress span {
+      display:block;height:100%;
+      width:var(--progress);
+      background:linear-gradient(90deg,var(--primary),var(--primary2));
+      border-radius:inherit;
+    }
+
+    .card-bottom {
+      display:flex;justify-content:space-between;align-items:center;
+      font-size:12px;
+    }
+
+    .open-btn {
+      border:0;
+      background:var(--text);
+      color:var(--bg);
+      padding:8px 12px;
+      border-radius:9px;
+      cursor:pointer;
+      font-weight:700;
+    }
+
+    .learning-grid {
+      display:grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap:18px;
+      margin-top: 18px;
+    }
+
+    .panel { padding:20px; }
+    .panel h3 { margin:0 0 15px; }
+
+    .timeline-item {
+      display:flex;gap:13px;
+      padding:12px 0;
+      border-bottom:1px solid var(--border);
+    }
+    .timeline-item:last-child { border-bottom:0; }
+    .dot {
+      width:10px;height:10px;border-radius:50%;
+      background:var(--primary);margin-top:5px;flex:none;
+    }
+    .timeline-item strong { font-size:14px; }
+    .timeline-item small { display:block;color:var(--muted);margin-top:3px; }
+
+    .goal {
+      display:flex;justify-content:space-between;align-items:center;
+      padding:12px 0;border-bottom:1px solid var(--border);
+    }
+    .goal:last-child {border:0}
+    .goal strong {font-size:14px}
+    .goal small {color:var(--muted);display:block;margin-top:3px}
+    .check {
+      width:24px;height:24px;border-radius:7px;
+      border:1px solid var(--border);
+      cursor:pointer;background:transparent;color:var(--primary);
+    }
+    .check.done { background:var(--primary);color:white; }
+
+    .empty {
+      grid-column:1/-1;
+      text-align:center;padding:45px;color:var(--muted);
+    }
+
+    .modal {
+      display:none; position:fixed; inset:0; z-index:50;
+      background:rgba(0,0,0,.55);
+      place-items:center;padding:20px;
+    }
+    .modal.show {display:grid;}
+    .modal-box {
+      width:min(720px,100%);
+      max-height:85vh;overflow:auto;
+      background:var(--card);
+      color:var(--text);
+      border-radius:20px;padding:25px;
+      box-shadow:0 25px 80px rgba(0,0,0,.3);
+    }
+    .modal-head {display:flex;justify-content:space-between;align-items:center}
+    .modal-head h2 {margin:0}
+    .close {border:0;background:transparent;color:var(--text);font-size:25px;cursor:pointer}
+    pre {
+      background:#111827;color:#e5e7eb;
+      padding:18px;border-radius:12px;overflow:auto;
+      position:relative;
+    }
+    code {font-family:"SFMono-Regular",Consolas,monospace;font-size:13px;}
+    .copy {
+      position:absolute;right:9px;top:9px;
+      border:1px solid #4b5563;background:#1f2937;color:#fff;
+      padding:6px 9px;border-radius:7px;cursor:pointer;
+    }
+
+    @media(max-width:1000px){
+      .stats{grid-template-columns:repeat(2,1fr)}
+      .tutorials{grid-template-columns:repeat(2,1fr)}
+    }
+    @media(max-width:750px){
+      .sidebar{transform:translateX(-100%)}
+      .sidebar.open{transform:translateX(0)}
+      .main{margin-left:0;width:100%;padding:18px}
+      .hero{padding:23px;align-items:flex-start}
+      .hero-stat{display:none}
+      .tutorials,.learning-grid{grid-template-columns:1fr}
+      .topbar{align-items:center}
+      .menu-btn{display:block!important}
+    }
+    .menu-btn{display:none}
+  </style>
+</head>
+
+<body>
+<div class="app">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-icon">A</div>
+      <div>My Learning Hub</div>
+    </div>
+
+    <div class="nav-title">Workspace</div>
+    <nav class="nav">
+      <button class="active" onclick="showSection('dashboard', this)"><span>🏠</span> Dashboard</button>
+      <button onclick="showSection('tutorials', this)"><span>📚</span> Tutorials</button>
+      <button onclick="showSection('progress', this)"><span>📈</span> My Progress</button>
+      <button onclick="showSection('goals', this)"><span>🎯</span> Learning Goals</button>
+    </nav>
+
+    <div class="nav-title">Topics</div>
+    <nav class="nav">
+      <button onclick="selectTopic('Java')"><span>☕</span> Java</button>
+      <button onclick="selectTopic('Web Development')"><span>🌐</span> Web Development</button>
+      <button onclick="selectTopic('Dart')"><span>🎯</span> Dart</button>
+      <button onclick="selectTopic('Flutter')"><span>📱</span> Flutter</button>
+      <button onclick="selectTopic('Machine Learning')"><span>🤖</span> Machine Learning</button>
+      <button onclick="selectTopic('Spring')"><span>🌱</span> Spring</button>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <button class="icon-btn menu-btn" onclick="toggleMenu()">☰</button>
+      <div class="search">
+        <span class="search-icon">🔎</span>
+        <input id="search" type="search" placeholder="Search tutorials, topics..." oninput="renderTutorials()" />
+      </div>
+      <div class="actions">
+        <button class="icon-btn" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+      </div>
+    </div>
+
+    <section id="dashboard">
+      <div class="hero">
+        <div class="profile">
+          <div class="avatar">AS</div>
+          <div>
+            <h1>Abhishek Sharma</h1>
+            <p>Assistant Professor • IT Professional • Technology Educator</p>
+            <span class="badge">🎓 Teaching • 💻 Technology • 🤖 AI & ML</span>
+          </div>
+        </div>
+        <div class="hero-stat">
+          <strong id="heroProgress">68%</strong>
+          <small>Overall learning progress</small>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat-card">
+          <div class="stat-top"><small>Tutorials</small><div class="stat-icon">📚</div></div>
+          <strong>24</strong><small>Available lessons</small>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top"><small>Completed</small><div class="stat-icon">✓</div></div>
+          <strong>11</strong><small>Lessons completed</small>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top"><small>Learning Hours</small><div class="stat-icon">⏱</div></div>
+          <strong>46</strong><small>Hours invested</small>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top"><small>Current Streak</small><div class="stat-icon">🔥</div></div>
+          <strong>7 days</strong><small>Keep it going!</small>
+        </div>
+      </div>
+    </section>
+
+    <section id="tutorials">
+      <div class="section-head">
+        <div>
+          <h2>Tutorial Library</h2>
+          <p>Choose a topic and continue learning at your own pace.</p>
+        </div>
+      </div>
+
+      <div class="tabs" id="tabs">
+        <button class="tab active" onclick="filterTab('All',this)">All</button>
+        <button class="tab" onclick="filterTab('Java',this)">☕ Java</button>
+        <button class="tab" onclick="filterTab('Web Development',this)">🌐 Web</button>
+        <button class="tab" onclick="filterTab('Dart',this)">🎯 Dart</button>
+        <button class="tab" onclick="filterTab('Flutter',this)">📱 Flutter</button>
+        <button class="tab" onclick="filterTab('Machine Learning',this)">🤖 ML</button>
+        <button class="tab" onclick="filterTab('Spring',this)">🌱 Spring</button>
+      </div>
+
+      <div class="tutorials" id="tutorialGrid"></div>
+    </section>
+
+    <section id="progress">
+      <div class="section-head">
+        <div>
+          <h2>Learning Progress</h2>
+          <p>A quick view of your current technology learning path.</p>
+        </div>
+      </div>
+
+      <div class="learning-grid">
+        <div class="panel">
+          <h3>📊 Technology Progress</h3>
+          <div class="goal"><div><strong>Java</strong><small>Core Java → Java 8+ → Streams</small></div><b>72%</b></div>
+          <div class="progress" style="--progress:72%"><span></span></div>
+          <div class="goal"><div><strong>Web Development</strong><small>HTML → CSS → JavaScript</small></div><b>65%</b></div>
+          <div class="progress" style="--progress:65%"><span></span></div>
+          <div class="goal"><div><strong>Flutter</strong><small>Dart → Widgets → State Management</small></div><b>45%</b></div>
+          <div class="progress" style="--progress:45%"><span></span></div>
+          <div class="goal"><div><strong>Machine Learning</strong><small>Models → Evaluation → Deep Learning</small></div><b>78%</b></div>
+          <div class="progress" style="--progress:78%"><span></span></div>
+        </div>
+
+        <div class="panel">
+          <h3>🕒 Recent Activity</h3>
+          <div class="timeline-item"><div class="dot"></div><div><strong>Java Lambda Expressions</strong><small>Completed • Today</small></div></div>
+          <div class="timeline-item"><div class="dot"></div><div><strong>Stream API Basics</strong><small>Completed • Yesterday</small></div></div>
+          <div class="timeline-item"><div class="dot"></div><div><strong>Flutter Widgets</strong><small>In progress • 62%</small></div></div>
+          <div class="timeline-item"><div class="dot"></div><div><strong>ROC Curve & Cross Validation</strong><small>Reviewed • 3 days ago</small></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="goals">
+      <div class="section-head">
+        <div>
+          <h2>Learning Goals</h2>
+          <p>Small targets that keep your learning journey moving.</p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="goal"><div><strong>☕ Strengthen Java 8+ skills</strong><small>Lambda, Functional Interfaces, Streams & Method References</small></div><button class="check done" onclick="toggleGoal(this)">✓</button></div>
+        <div class="goal"><div><strong>🌐 Build a responsive web project</strong><small>HTML, CSS, JavaScript and browser APIs</small></div><button class="check" onclick="toggleGoal(this)">✓</button></div>
+        <div class="goal"><div><strong>📱 Create a Flutter application</strong><small>Dart fundamentals, widgets and navigation</small></div><button class="check" onclick="toggleGoal(this)">✓</button></div>
+        <div class="goal"><div><strong>🤖 Revise Machine Learning fundamentals</strong><small>Supervised, unsupervised learning and model evaluation</small></div><button class="check done" onclick="toggleGoal(this)">✓</button></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="modal" id="modal" onclick="closeModal(event)">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2 id="modalTitle">Tutorial</h2>
+      <button class="close" onclick="hideModal()">×</button>
+    </div>
+    <p id="modalDescription"></p>
+    <h3>Quick Example</h3>
+    <pre><button class="copy" onclick="copyCode()">Copy</button><code id="codeBlock"></code></pre>
+    <h3>Suggested Learning Path</h3>
+    <ol id="path"></ol>
+  </div>
+</div>
+
+<script>
+const tutorials = [
+  {title:"Java Fundamentals", topic:"Java", icon:"☕", level:"Beginner", progress:82, desc:"Classes, objects, inheritance, interfaces and exception handling.", code:`public class Hello {\\n  public static void main(String[] args) {\\n    System.out.println("Hello Java");\\n  }\\n}`, path:["Variables & Data Types","OOP Concepts","Collections","Exception Handling"]},
+  {title:"Java 8+ & Lambda", topic:"Java", icon:"λ", level:"Intermediate", progress:65, desc:"Learn lambda expressions, functional interfaces, method references and streams.", code:`List<Integer> nums = List.of(1, 2, 3, 4);\\nnums.stream()\\n    .filter(n -> n % 2 == 0)\\n    .forEach(System.out::println);`, path:["Functional Interfaces","Lambda Expressions","Method References","Stream API"]},
+  {title:"HTML & CSS", topic:"Web Development", icon:"🌐", level:"Beginner", progress:75, desc:"Build clean, responsive web pages using semantic HTML and modern CSS.", code:`<section class="card">\\n  <h2>Hello Web</h2>\\n  <p>My first smart page.</p>\\n</section>`, path:["HTML Structure","CSS Selectors","Flexbox & Grid","Responsive Design"]},
+  {title:"JavaScript ES6+", topic:"Web Development", icon:"⚡", level:"Intermediate", progress:58, desc:"Modern JavaScript including let/const, functions, arrays, objects and modules.", code:`const add = (a, b) => a + b;\\nconsole.log(add(10, 20));`, path:["ES6 Syntax","Functions","Objects & Arrays","Async JavaScript"]},
+  {title:"Dart Fundamentals", topic:"Dart", icon:"🎯", level:"Beginner", progress:42, desc:"Variables, null safety, functions, classes and collections in Dart.", code:`void main() {\\n  String name = "Abhishek";\\n  print("Hello $name");\\n}`, path:["Syntax","Null Safety","Functions","Classes & Collections"]},
+  {title:"Flutter UI Development", topic:"Flutter", icon:"📱", level:"Intermediate", progress:38, desc:"Create mobile interfaces with widgets, layouts, navigation and state.", code:`Scaffold(\\n  appBar: AppBar(title: Text("My App")),\\n  body: Center(child: Text("Hello Flutter")),\\n);`, path:["Widgets","Layouts","Navigation","State Management"]},
+  {title:"Machine Learning Basics", topic:"Machine Learning", icon:"🤖", level:"Intermediate", progress:78, desc:"Understand supervised and unsupervised learning, training and evaluation.", code:`model.fit(X_train, y_train)\\npredictions = model.predict(X_test)`, path:["Data Preparation","Supervised Learning","Unsupervised Learning","Evaluation"]},
+  {title:"Spring Core", topic:"Spring", icon:"🌱", level:"Intermediate", progress:34, desc:"Learn IoC, Dependency Injection, beans and basic Spring architecture.", code:`@Component\\nclass UserService {\\n  // Spring manages this object\\n}`, path:["IoC","Dependency Injection","Beans","AOP"]},
+  {title:"Spring Boot REST API", topic:"Spring", icon:"🚀", level:"Advanced", progress:20, desc:"Build REST APIs using Spring Boot, controllers, services and repositories.", code:`@RestController\\nclass HelloController {\\n  @GetMapping("/hello")\\n  String hello() { return "Hello"; }\\n}`, path:["Spring Boot","REST Controllers","Services","Database Integration"]}
+];
+
+let activeTopic = "All";
+
+function renderTutorials(){
+  const query = document.getElementById("search").value.toLowerCase();
+  const grid = document.getElementById("tutorialGrid");
+  const list = tutorials.filter(t =>
+    (activeTopic === "All" || t.topic === activeTopic) &&
+    (t.title.toLowerCase().includes(query) || t.topic.toLowerCase().includes(query) || t.desc.toLowerCase().includes(query))
+  );
+
+  if(!list.length){
+    grid.innerHTML = '<div class="empty">🔍 No tutorials found. Try another search.</div>';
+    return;
+  }
+
+  grid.innerHTML = list.map((t,i)=>`
+    <article class="tutorial-card">
+      <div class="tutorial-icon">${t.icon}</div>
+      <div class="level">${t.topic} • ${t.level}</div>
+      <h3>${t.title}</h3>
+      <p>${t.desc}</p>
+      <div class="progress" style="--progress:${t.progress}%"><span></span></div>
+      <div class="card-bottom">
+        <span>${t.progress}% complete</span>
+        <button class="open-btn" onclick="openTutorial(${tutorials.indexOf(t)})">Open →</button>
+      </div>
+    </article>
+  `).join("");
+}
+
+function filterTab(topic, btn){
+  activeTopic = topic;
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+  btn.classList.add("active");
+  renderTutorials();
+  document.getElementById("tutorials").scrollIntoView({behavior:"smooth"});
+}
+
+function selectTopic(topic){
+  activeTopic = topic;
+  document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active", x.textContent.includes(topic === "Web Development" ? "Web" : topic)));
+  renderTutorials();
+  document.getElementById("tutorials").scrollIntoView({behavior:"smooth"});
+}
+
+function openTutorial(index){
+  const t = tutorials[index];
+  document.getElementById("modalTitle").textContent = t.icon + " " + t.title;
+  document.getElementById("modalDescription").textContent = t.desc;
+  document.getElementById("codeBlock").textContent = t.code.replace(/\\n/g,"\n");
+  document.getElementById("path").innerHTML = t.path.map(x=>`<li>${x}</li>`).join("");
+  document.getElementById("modal").classList.add("show");
+}
+
+function hideModal(){ document.getElementById("modal").classList.remove("show"); }
+
+function closeModal(e){
+  if(e.target.id === "modal") hideModal();
+}
+
+function copyCode(){
+  navigator.clipboard.writeText(document.getElementById("codeBlock").textContent);
+  const btn = document.querySelector(".copy");
+  btn.textContent = "Copied!";
+  setTimeout(()=>btn.textContent="Copy",1200);
+}
+
+function toggleTheme(){
+  document.body.classList.toggle("dark");
+  localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark":"light");
+}
+
+function toggleGoal(btn){
+  btn.classList.toggle("done");
+}
+
+function toggleMenu(){
+  document.getElementById("sidebar").classList.toggle("open");
+}
+
+function showSection(id, btn){
+  document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  document.getElementById(id).scrollIntoView({behavior:"smooth"});
+  document.getElementById("sidebar").classList.remove("open");
+}
+
+document.addEventListener("keydown", e=>{
+  if(e.key === "Escape") hideModal();
+});
+
+if(localStorage.getItem("theme")==="dark") document.body.classList.add("dark");
+renderTutorials();
+</script>
+</body>
+</html>
