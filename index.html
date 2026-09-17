@@ -569,6 +569,7 @@
 </div>
 
 <script>
+  // add an ADBMS tutorail Card with title, topic, icon, level, progress, description, code snippet and path
 const tutorials = [
   {title:"Java Fundamentals", topic:"Java", icon:"☕", level:"Beginner", progress:82, desc:"Classes, objects, inheritance, interfaces and exception handling.", code:`public class Hello {\\n  public static void main(String[] args) {\\n    System.out.println("Hello Java");\\n  }\\n}`, path:["Variables & Data Types","OOP Concepts","Collections","Exception Handling"]},
   {title:"Java 8+ & Lambda", topic:"Java", icon:"λ", level:"Intermediate", progress:65, desc:"Learn lambda expressions, functional interfaces, method references and streams.", code:`List<Integer> nums = List.of(1, 2, 3, 4);\\nnums.stream()\\n    .filter(n -> n % 2 == 0)\\n    .forEach(System.out::println);`, path:["Functional Interfaces","Lambda Expressions","Method References","Stream API"]},
@@ -578,7 +579,8 @@ const tutorials = [
   {title:"Flutter UI Development", topic:"Flutter", icon:"📱", level:"Intermediate", progress:38, desc:"Create mobile interfaces with widgets, layouts, navigation and state.", code:`Scaffold(\\n  appBar: AppBar(title: Text("My App")),\\n  body: Center(child: Text("Hello Flutter")),\\n);`, path:["Widgets","Layouts","Navigation","State Management"]},
   {title:"Machine Learning Basics", topic:"Machine Learning", icon:"🤖", level:"Intermediate", progress:78, desc:"Understand supervised and unsupervised learning, training and evaluation.", code:`model.fit(X_train, y_train)\\npredictions = model.predict(X_test)`, path:["Data Preparation","Supervised Learning","Unsupervised Learning","Evaluation"]},
   {title:"Spring Core", topic:"Spring", icon:"🌱", level:"Intermediate", progress:34, desc:"Learn IoC, Dependency Injection, beans and basic Spring architecture.", code:`@Component\\nclass UserService {\\n  // Spring manages this object\\n}`, path:["IoC","Dependency Injection","Beans","AOP"]},
-  {title:"Spring Boot REST API", topic:"Spring", icon:"🚀", level:"Advanced", progress:20, desc:"Build REST APIs using Spring Boot, controllers, services and repositories.", code:`@RestController\\nclass HelloController {\\n  @GetMapping("/hello")\\n  String hello() { return "Hello"; }\\n}`, path:["Spring Boot","REST Controllers","Services","Database Integration"]}
+  {title:"Spring Boot REST API", topic:"Spring", icon:"🚀", level:"Advanced", progress:20, desc:"Build REST APIs using Spring Boot, controllers, services and repositories.", code:`@RestController\\nclass HelloController {\\n  @GetMapping("/hello")\\n  String hello() { return "Hello"; }\\n}`, path:["Spring Boot","REST Controllers","Services","Database Integration"]},
+  {title:"ADBMS", topic:"MonGODB", icon:"🗄️", level:"Intermediate", progress:50, desc:"Learn about database design, normalization, SQL queries and transactions.", code:`CREATE TABLE Students (\\n  ID INT PRIMARY KEY,\\n  Name VARCHAR(100),\\n  Age INT\\n);`, path:["Database Design","Normalization","SQL Queries","Transactions"]},
 ];
 
 let activeTopic = "All";
